@@ -369,225 +369,259 @@
 
     <script>
         // ============================================================
-        //  多语言 + 数据外挂 + 主题切换 + 单语言文章目录
+        //  全部逻辑放在 DOMContentLoaded 中，确保元素已存在
         // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
 
-        let currentLang = 'zhs';
-        let langData = null;
-        let profileData = null;
-        let manifestPosts = null;
-        let POSTS = [];
-
-        // -------- 主题切换 --------
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-        function setTheme(theme) {
-            htmlElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-        }
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
-        themeToggle.addEventListener('click', () => {
-            const current = htmlElement.getAttribute('data-theme') || 'dark';
-            setTheme(current === 'dark' ? 'light' : 'dark');
-        });
-
-        // -------- 工具函数 --------
-        function getLangFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            const lang = params.get('lang');
-            return (lang === 'zhs' || lang === 'zht' || lang === 'eng') ? lang : 'zhs';
-        }
-
-        async function loadLang() {
-            const res = await fetch('config/lang.json');
-            if (!res.ok) throw new Error(`无法加载 config/lang.json (HTTP ${res.status})`);
-            return await res.json();
-        }
-
-        async function loadProfile() {
-            const res = await fetch('config/profile.json');
-            if (!res.ok) throw new Error(`无法加载 config/profile.json (HTTP ${res.status})`);
-            return await res.json();
-        }
-
-        async function loadManifest() {
-            const res = await fetch('posts/manifest.json');
-            if (!res.ok) throw new Error(`无法加载 posts/manifest.json (HTTP ${res.status})`);
-            return await res.json();
-        }
-
-        function getText(obj) {
-            if (typeof obj === 'string') return obj;
-            if (obj && typeof obj === 'object') {
-                return obj[currentLang] || obj['zhs'] || '';
-            }
-            return '';
-        }
-
-        // -------- 个人简介渲染（增强容错） --------
-        function renderProfile() {
-            const container = document.getElementById('profileContainer');
-
-            if (!langData || !profileData) {
-                container.innerHTML = `<p style="color: var(--text-muted);">⏳ 配置加载中...</p>`;
-                return;
-            }
-
-            const p = langData.profile || {};
-            const socials = profileData.social || [];
-
-            const socialHtml = socials.map(s => {
-                const labelObj = langData.social_labels && langData.social_labels[s.id];
-                const label = labelObj ? getText(labelObj) : s.id;
-                return `<a href="${s.url || '#'}" target="_blank">${label}</a>`;
-            }).join('');
-
-            container.innerHTML = `
-                <div class="avatar">
-                    <img src="${profileData.avatar || 'images/avatar.jpg'}" alt="头像" />
-                </div>
-                <h1>${getText(p.name) || '未命名'}</h1>
-                <p class="tagline">${getText(p.tagline) || ''}</p>
-                <p class="bio">${getText(p.bio) || ''}</p>
-                <div class="social-links">${socialHtml}</div>
-            `;
-        }
-
-        // -------- 文章数据更新（单语言） --------
-        function updatePostsForCurrentLang() {
-            if (!manifestPosts) {
-                POSTS = [];
-                return;
-            }
-            // 直接使用原始数据，不再转换（title/desc 已经是字符串）
-            POSTS = manifestPosts.map(item => ({
-                id: item.id,
-                date: item.date,
-                title: item.title,
-                desc: item.desc
-            }));
-        }
-
-        // -------- 渲染首页 --------
-        function renderHome() {
-            document.getElementById('homeView').style.display = 'block';
-            document.getElementById('postView').classList.remove('active');
-            document.getElementById('backBtn').classList.remove('show');
-            document.getElementById('backBtn').textContent = getText(langData.back_button);
-            document.getElementById('viewTitle').textContent = getText(langData.nav_title);
-
-            const list = document.getElementById('postList');
-            if (POSTS.length === 0) {
-                list.innerHTML = `<p style="color:var(--text-light);padding:20px;">${getText(langData.no_posts)}</p>`;
-                return;
-            }
-            list.innerHTML = POSTS.map(p => `
-                <div class="post-item" onclick="openPost('${p.id}')">
-                    <h3>${p.title}</h3>
-                    <div class="meta">📅 ${p.date}</div>
-                    <div class="desc">${p.desc}</div>
-                </div>
-            `).join('');
-        }
-
-        // -------- 打开文章详情 --------
-        window.openPost = async function(id) {
-            const post = POSTS.find(p => p.id === id);
-            if (!post) return;
-            try {
-                const res = await fetch(`posts/${id}.md`);
-                if (!res.ok) throw new Error('文件不存在');
-                const md = await res.text();
-                const html = marked.parse(md);
-                document.getElementById('detailTitle').textContent = post.title;
-                document.getElementById('detailMeta').textContent = `📅 ${post.date}`;
-                document.getElementById('detailContent').innerHTML = html;
-            } catch (e) {
-                document.getElementById('detailTitle').textContent = post.title;
-                document.getElementById('detailMeta').textContent = `📅 ${post.date}`;
-                document.getElementById('detailContent').innerHTML = `
-                    <p>✍️ ${getText(langData.no_posts)}</p>
-                    <p>请在 <code>posts/${id}.md</code> 中写入内容。</p>
-                `;
-            }
-            document.getElementById('homeView').style.display = 'none';
-            document.getElementById('postView').classList.add('active');
-            document.getElementById('backBtn').classList.add('show');
-            document.getElementById('backBtn').textContent = getText(langData.back_button);
-            document.getElementById('viewTitle').textContent = getText(langData.reading_title);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        document.getElementById('backBtn').addEventListener('click', renderHome);
-
-        // -------- 语言切换 --------
-        async function switchLanguage(lang) {
-            if (lang === currentLang) return;
-            currentLang = lang;
-            const url = new URL(window.location);
-            url.searchParams.set('lang', lang);
-            window.history.pushState({}, '', url);
-
-            renderProfile(); // 更新个人简介（含社交标签）
-            // 文章列表不重新生成（因为是单语言），但需更新界面按钮文字
+            // -------- 获取所有需要用到的 DOM 元素 --------
+            const themeToggle = document.getElementById('themeToggle');
+            const htmlElement = document.documentElement;
+            const profileContainer = document.getElementById('profileContainer');
+            const viewTitle = document.getElementById('viewTitle');
+            const backBtn = document.getElementById('backBtn');
+            const homeView = document.getElementById('homeView');
             const postView = document.getElementById('postView');
-            if (postView.classList.contains('active')) {
-                // 仅更新按钮文字和顶部标题
-                document.getElementById('backBtn').textContent = getText(langData.back_button);
-                document.getElementById('viewTitle').textContent = getText(langData.reading_title);
-            } else {
-                renderHome(); // 会更新首页按钮和标题
+            const postList = document.getElementById('postList');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailMeta = document.getElementById('detailMeta');
+            const detailContent = document.getElementById('detailContent');
+            const langButtons = document.querySelectorAll('.lang-switch button');
+
+            // -------- 主题切换（带判空） --------
+            function setTheme(theme) {
+                if (!htmlElement) return;
+                htmlElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                if (themeToggle) {
+                    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+                }
             }
-            document.title = getText(langData.site_title);
-            // 高亮语言按钮
-            document.querySelectorAll('.lang-switch button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-        }
 
-        // -------- 初始化（增强错误处理） --------
-        async function init() {
-            try {
-                langData = await loadLang();
-                profileData = await loadProfile();
-                manifestPosts = await loadManifest();
+            // 加载保存的主题
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
 
-                const initialLang = getLangFromURL();
-                currentLang = initialLang;
-                updatePostsForCurrentLang();
-                renderProfile();
-                renderHome();
-                document.title = getText(langData.site_title);
-
-                // 语言按钮事件
-                document.querySelectorAll('.lang-switch button').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.lang === initialLang);
-                    btn.addEventListener('click', () => {
-                        switchLanguage(btn.dataset.lang);
-                    });
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    const current = htmlElement.getAttribute('data-theme') || 'dark';
+                    setTheme(current === 'dark' ? 'light' : 'dark');
                 });
-                window.addEventListener('popstate', () => {
-                    const newLang = getLangFromURL();
-                    if (newLang !== currentLang) {
-                        switchLanguage(newLang);
-                    }
-                });
-            } catch (e) {
-                console.error('初始化失败:', e);
-                document.getElementById('profileContainer').innerHTML = `
-                    <p style="color: #ef4444; padding: 20px;">
-                        ⚠️ 加载配置失败，请检查控制台错误信息。<br>
-                        <small style="font-size:0.8rem;">${e.message}</small>
-                    </p>
+            }
+
+            // -------- 全局状态 --------
+            let currentLang = 'zhs';
+            let langData = null;
+            let profileData = null;
+            let manifestPosts = null;
+            let POSTS = [];
+
+            // -------- 工具函数 --------
+            function getLangFromURL() {
+                const params = new URLSearchParams(window.location.search);
+                const lang = params.get('lang');
+                return (lang === 'zhs' || lang === 'zht' || lang === 'eng') ? lang : 'zhs';
+            }
+
+            async function loadLang() {
+                const res = await fetch('config/lang.json');
+                if (!res.ok) throw new Error(`无法加载 config/lang.json (HTTP ${res.status})`);
+                return await res.json();
+            }
+
+            async function loadProfile() {
+                const res = await fetch('config/profile.json');
+                if (!res.ok) throw new Error(`无法加载 config/profile.json (HTTP ${res.status})`);
+                return await res.json();
+            }
+
+            async function loadManifest() {
+                const res = await fetch('posts/manifest.json');
+                if (!res.ok) throw new Error(`无法加载 posts/manifest.json (HTTP ${res.status})`);
+                return await res.json();
+            }
+
+            function getText(obj) {
+                if (typeof obj === 'string') return obj;
+                if (obj && typeof obj === 'object') {
+                    return obj[currentLang] || obj['zhs'] || '';
+                }
+                return '';
+            }
+
+            // -------- 渲染个人简介 --------
+            function renderProfile() {
+                if (!profileContainer) return;
+                if (!langData || !profileData) {
+                    profileContainer.innerHTML = `<p style="color: var(--text-muted);">⏳ 配置加载中...</p>`;
+                    return;
+                }
+
+                const p = langData.profile || {};
+                const socials = profileData.social || [];
+
+                const socialHtml = socials.map(s => {
+                    const labelObj = langData.social_labels && langData.social_labels[s.id];
+                    const label = labelObj ? getText(labelObj) : s.id;
+                    return `<a href="${s.url || '#'}" target="_blank">${label}</a>`;
+                }).join('');
+
+                profileContainer.innerHTML = `
+                    <div class="avatar">
+                        <img src="${profileData.avatar || 'images/avatar.jpg'}" alt="头像" />
+                    </div>
+                    <h1>${getText(p.name) || '未命名'}</h1>
+                    <p class="tagline">${getText(p.tagline) || ''}</p>
+                    <p class="bio">${getText(p.bio) || ''}</p>
+                    <div class="social-links">${socialHtml}</div>
                 `;
-                // 尝试渲染首页（可能无文章）
-                renderHome();
             }
-        }
 
-        init();
+            // -------- 文章数据更新（单语言） --------
+            function updatePostsForCurrentLang() {
+                if (!manifestPosts) {
+                    POSTS = [];
+                    return;
+                }
+                POSTS = manifestPosts.map(item => ({
+                    id: item.id,
+                    date: item.date,
+                    title: item.title,
+                    desc: item.desc
+                }));
+            }
+
+            // -------- 渲染首页 --------
+            function renderHome() {
+                if (!homeView || !postView || !backBtn || !viewTitle || !postList) return;
+                homeView.style.display = 'block';
+                postView.classList.remove('active');
+                backBtn.classList.remove('show');
+                if (langData) {
+                    backBtn.textContent = getText(langData.back_button);
+                    viewTitle.textContent = getText(langData.nav_title);
+                }
+
+                if (POSTS.length === 0) {
+                    postList.innerHTML = `<p style="color:var(--text-light);padding:20px;">${langData ? getText(langData.no_posts) : '暂无文章'}</p>`;
+                    return;
+                }
+                postList.innerHTML = POSTS.map(p => `
+                    <div class="post-item" onclick="window.openPost('${p.id}')">
+                        <h3>${p.title}</h3>
+                        <div class="meta">📅 ${p.date}</div>
+                        <div class="desc">${p.desc}</div>
+                    </div>
+                `).join('');
+            }
+
+            // -------- 打开文章详情 --------
+            window.openPost = async function(id) {
+                const post = POSTS.find(p => p.id === id);
+                if (!post) return;
+                try {
+                    const res = await fetch(`posts/${id}.md`);
+                    if (!res.ok) throw new Error('文件不存在');
+                    const md = await res.text();
+                    const html = marked.parse(md);
+                    if (detailTitle) detailTitle.textContent = post.title;
+                    if (detailMeta) detailMeta.textContent = `📅 ${post.date}`;
+                    if (detailContent) detailContent.innerHTML = html;
+                } catch (e) {
+                    if (detailTitle) detailTitle.textContent = post.title;
+                    if (detailMeta) detailMeta.textContent = `📅 ${post.date}`;
+                    if (detailContent) {
+                        detailContent.innerHTML = `
+                            <p>✍️ ${langData ? getText(langData.no_posts) : '文章内容缺失'}</p>
+                            <p>请在 <code>posts/${id}.md</code> 中写入内容。</p>
+                        `;
+                    }
+                }
+                if (homeView) homeView.style.display = 'none';
+                if (postView) postView.classList.add('active');
+                if (backBtn) {
+                    backBtn.classList.add('show');
+                    if (langData) backBtn.textContent = getText(langData.back_button);
+                }
+                if (viewTitle && langData) viewTitle.textContent = getText(langData.reading_title);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // -------- 返回首页 --------
+            if (backBtn) {
+                backBtn.addEventListener('click', renderHome);
+            }
+
+            // -------- 语言切换 --------
+            async function switchLanguage(lang) {
+                if (lang === currentLang) return;
+                currentLang = lang;
+                const url = new URL(window.location);
+                url.searchParams.set('lang', lang);
+                window.history.pushState({}, '', url);
+
+                renderProfile(); // 更新个人简介
+
+                // 更新界面按钮文字
+                if (postView && postView.classList.contains('active')) {
+                    if (backBtn && langData) backBtn.textContent = getText(langData.back_button);
+                    if (viewTitle && langData) viewTitle.textContent = getText(langData.reading_title);
+                } else {
+                    renderHome(); // 会更新首页所有文字
+                }
+
+                if (langData) document.title = getText(langData.site_title);
+
+                // 高亮语言按钮
+                langButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+            }
+
+            // -------- 初始化 --------
+            async function init() {
+                try {
+                    langData = await loadLang();
+                    profileData = await loadProfile();
+                    manifestPosts = await loadManifest();
+
+                    const initialLang = getLangFromURL();
+                    currentLang = initialLang;
+                    updatePostsForCurrentLang();
+                    renderProfile();
+                    renderHome();
+                    if (langData) document.title = getText(langData.site_title);
+
+                    // 语言按钮事件
+                    langButtons.forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.lang === initialLang);
+                        btn.addEventListener('click', function() {
+                            switchLanguage(this.dataset.lang);
+                        });
+                    });
+
+                    window.addEventListener('popstate', function() {
+                        const newLang = getLangFromURL();
+                        if (newLang !== currentLang) {
+                            switchLanguage(newLang);
+                        }
+                    });
+
+                } catch (e) {
+                    console.error('初始化失败:', e);
+                    if (profileContainer) {
+                        profileContainer.innerHTML = `
+                            <p style="color: #ef4444; padding: 20px;">
+                                ⚠️ 加载配置失败，请检查控制台错误信息。<br>
+                                <small style="font-size:0.8rem;">${e.message}</small>
+                            </p>
+                        `;
+                    }
+                    renderHome();
+                }
+            }
+
+            init();
+        });
     </script>
 
 </body>
