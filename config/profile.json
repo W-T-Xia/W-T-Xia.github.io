@@ -1,0 +1,10 @@
+{
+    "avatar": "images/avatar.jpg",
+    "social": [
+        { "platform": "WeChat", "url": "https://example.com/wechat" },
+        { "platform": "WhatsApp", "url": "https://wa.me/你的号码" },
+        { "platform": "Instagram", "url": "https://instagram.com/你的用户名" },
+        { "platform": "GitHub", "url": "https://github.com/你的用户名" },
+        { "platform": "Email", "url": "mailto:你的邮箱@example.com" }
+    ]
+}
