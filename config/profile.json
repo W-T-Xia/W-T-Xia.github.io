@@ -1,9 +1,6 @@
 {
     "avatar": "images/avatar.jpg",
     "social": [
-        { "id": "WeChat", "url": "https://example.com/wechat" },
-        { "id": "WhatsApp", "url": "https://wa.me/你的号码" },
-        { "id": "Instagram", "url": "https://instagram.com/你的用户名" },
         { "id": "GitHub", "url": "https://github.com/W-T-Xia" },
         { "id": "Email", "url": "mailto:w.t.xia.2005@gmail.com" }
     ]
