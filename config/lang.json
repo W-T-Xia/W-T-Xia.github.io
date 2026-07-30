@@ -1,1 +1,71 @@
-
+{
+    "site_title": {
+        "zhs": "夏文韬 · 个人博客",
+        "zht": "夏文韜 · 個人部落格",
+        "eng": "Xia Wentao · Personal Blog"
+    },
+    "nav_title": {
+        "zhs": "📖 文章目录",
+        "zht": "📖 文章目錄",
+        "eng": "📖 Blog Archive"
+    },
+    "back_button": {
+        "zhs": "← 返回目录",
+        "zht": "← 返回目錄",
+        "eng": "← Back to Archive"
+    },
+    "reading_title": {
+        "zhs": "📄 阅读文章",
+        "zht": "📄 閱讀文章",
+        "eng": "📄 Reading Article"
+    },
+    "no_posts": {
+        "zhs": "📭 暂无文章，快去写一篇吧 ✍️",
+        "zht": "📭 暫無文章，快去寫一篇吧 ✍️",
+        "eng": "📭 No posts yet. Start writing! ✍️"
+    },
+    "profile": {
+        "name": {
+            "zhs": "夏文韬",
+            "zht": "夏文韜",
+            "eng": "Xia Wentao"
+        },
+        "tagline": {
+            "zhs": "🧑‍💻 全栈开发者 · 终身学习者",
+            "zht": "🧑‍💻 全端開發者 · 終身學習者",
+            "eng": "🧑‍💻 Full-stack Developer · Lifelong Learner"
+        },
+        "bio": {
+            "zhs": "热爱技术、阅读与写作。相信分享是最高效的学习方式。",
+            "zht": "熱愛技術、閱讀與寫作。相信分享是最高效的學習方式。",
+            "eng": "Passionate about tech, reading, and writing. I believe sharing is the best way to learn."
+        }
+    },
+    "social_labels": {
+        "wechat": {
+            "zhs": "微信",
+            "zht": "微信",
+            "eng": "WeChat"
+        },
+        "whatsapp": {
+            "zhs": "WhatsApp",
+            "zht": "WhatsApp",
+            "eng": "WhatsApp"
+        },
+        "instagram": {
+            "zhs": "Instagram",
+            "zht": "Instagram",
+            "eng": "Instagram"
+        },
+        "github": {
+            "zhs": "GitHub",
+            "zht": "GitHub",
+            "eng": "GitHub"
+        },
+        "email": {
+            "zhs": "邮箱",
+            "zht": "電子郵件",
+            "eng": "Email"
+        }
+    }
+}
