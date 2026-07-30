@@ -1,12 +1,80 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="pageTitle">加载中...</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* ===== 全局样式 ===== */
+        /* ============================================================
+           全局 CSS 变量（亮色/深色）
+           ============================================================ */
+        :root {
+            /* 亮色主题（默认） */
+            --bg-body: #f4f7fb;
+            --bg-container: rgba(255, 255, 255, 0.75);
+            --border-container: rgba(255, 255, 255, 0.8);
+            --shadow-container: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
+            --bg-profile: rgba(255, 255, 255, 0.5);
+            --text-primary: #1e293b;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --card-bg: white;
+            --card-border: rgba(0, 0, 0, 0.02);
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            --card-hover-border: #bfdbfe;
+            --card-hover-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.1);
+            --link-color: #2563eb;
+            --link-hover-bg: #2563eb;
+            --btn-bg: white;
+            --btn-border: #e2e8f0;
+            --btn-hover-bg: #2563eb;
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+            --blockquote-border: #2563eb;
+            --blockquote-text: #475569;
+            --post-body-bg: white;
+            --lang-btn-border: #cbd5e1;
+            --lang-btn-active-bg: #2563eb;
+            --lang-btn-active-color: white;
+            --back-btn-color: #2563eb;
+            --back-btn-bg: rgba(37, 99, 235, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-container: rgba(20, 30, 50, 0.85);
+            --border-container: rgba(255, 255, 255, 0.06);
+            --shadow-container: 0 20px 50px -12px rgba(0, 0, 0, 0.6);
+            --bg-profile: rgba(255, 255, 255, 0.04);
+            --text-primary: #e8edf5;
+            --text-secondary: #c8d0dc;
+            --text-muted: #8895a8;
+            --text-light: #5a6b7e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.04);
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --card-hover-border: #3b82f6;
+            --card-hover-shadow: 0 12px 28px -12px rgba(59, 130, 246, 0.2);
+            --link-color: #60a5fa;
+            --link-hover-bg: #3b82f6;
+            --btn-bg: rgba(255, 255, 255, 0.06);
+            --btn-border: rgba(255, 255, 255, 0.1);
+            --btn-hover-bg: #3b82f6;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --blockquote-border: #60a5fa;
+            --blockquote-text: #a0b3cc;
+            --post-body-bg: rgba(255, 255, 255, 0.03);
+            --lang-btn-border: #334155;
+            --lang-btn-active-bg: #3b82f6;
+            --lang-btn-active-color: white;
+            --back-btn-color: #60a5fa;
+            --back-btn-bg: rgba(59, 130, 246, 0.15);
+        }
+
+        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -14,12 +82,13 @@
         }
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: #f4f7fb;
+            background: var(--bg-body);
             display: flex;
             justify-content: center;
             padding: 40px 20px;
-            color: #1e293b;
+            color: var(--text-primary);
             min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
         }
         .container {
             max-width: 1100px;
@@ -27,20 +96,24 @@
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 40px;
-            background: rgba(255, 255, 255, 0.75);
+            background: var(--bg-container);
             backdrop-filter: blur(12px);
             padding: 32px;
             border-radius: 40px;
-            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: var(--shadow-container);
+            border: 1px solid var(--border-container);
             align-items: start;
+            transition: background 0.3s, border 0.3s, box-shadow 0.3s;
         }
+
+        /* ===== 左侧个人名片 ===== */
         .profile {
             text-align: center;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--bg-profile);
             padding: 30px 20px;
             border-radius: 28px;
             backdrop-filter: blur(4px);
+            transition: background 0.3s;
         }
         .avatar {
             width: 130px;
@@ -61,16 +134,17 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 4px;
+            color: var(--text-primary);
         }
         .profile .tagline {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 0.95rem;
             margin-bottom: 14px;
         }
         .profile .bio {
             font-size: 0.9rem;
             line-height: 1.7;
-            color: #334155;
+            color: var(--text-secondary);
             margin-bottom: 20px;
         }
         .social-links {
@@ -81,22 +155,23 @@
         }
         .social-links a {
             text-decoration: none;
-            background: white;
+            background: var(--btn-bg);
             padding: 5px 18px;
             border-radius: 40px;
             font-size: 0.8rem;
             font-weight: 500;
-            color: #1e293b;
-            border: 1px solid #e2e8f0;
+            color: var(--text-primary);
+            border: 1px solid var(--btn-border);
             transition: 0.2s;
         }
         .social-links a:hover {
-            background: #2563eb;
+            background: var(--link-hover-bg);
             color: white;
-            border-color: #2563eb;
+            border-color: var(--link-hover-bg);
             transform: translateY(-2px);
         }
 
+        /* ===== 右侧主区域 ===== */
         .main-content {
             min-width: 0;
         }
@@ -112,76 +187,100 @@
             font-weight: 600;
             font-size: 1.3rem;
             margin: 0;
+            color: var(--text-primary);
+        }
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .lang-switch {
             display: flex;
-            gap: 6px;
+            gap: 4px;
         }
-        .lang-switch button {
+        .lang-switch button,
+        .theme-toggle {
             background: none;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--lang-btn-border);
             border-radius: 20px;
             padding: 4px 12px;
             font-size: 0.75rem;
             cursor: pointer;
-            background: white;
+            background: var(--btn-bg);
+            color: var(--text-primary);
             transition: 0.2s;
             font-weight: 500;
         }
         .lang-switch button.active {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
+            background: var(--lang-btn-active-bg);
+            color: var(--lang-btn-active-color);
+            border-color: var(--lang-btn-active-bg);
         }
-        .lang-switch button:hover:not(.active) {
-            background: #e2e8f0;
+        .lang-switch button:hover:not(.active),
+        .theme-toggle:hover {
+            background: var(--lang-btn-active-bg);
+            color: white;
+            border-color: var(--lang-btn-active-bg);
+        }
+        .theme-toggle {
+            font-size: 1rem;
+            padding: 4px 10px;
+            line-height: 1;
         }
 
         #backBtn {
             display: none;
             background: none;
             border: none;
-            color: #2563eb;
+            color: var(--back-btn-color);
             font-weight: 500;
             cursor: pointer;
             font-size: 0.9rem;
             padding: 6px 14px;
             border-radius: 30px;
-            background: rgba(37, 99, 235, 0.08);
+            background: var(--back-btn-bg);
+            transition: 0.2s;
         }
         #backBtn.show {
             display: inline-block;
         }
+        #backBtn:hover {
+            background: var(--back-btn-color);
+            color: white;
+        }
 
+        /* 文章列表卡片 */
         .post-item {
-            background: white;
+            background: var(--card-bg);
             padding: 18px 24px;
             border-radius: 18px;
             cursor: pointer;
             transition: 0.2s;
             margin-bottom: 14px;
-            border: 1px solid rgba(0, 0, 0, 0.02);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
         }
         .post-item:hover {
             transform: translateX(6px);
-            border-color: #bfdbfe;
-            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.1);
+            border-color: var(--card-hover-border);
+            box-shadow: var(--card-hover-shadow);
         }
         .post-item h3 {
             font-weight: 600;
             margin-bottom: 2px;
+            color: var(--text-primary);
         }
         .post-item .meta {
             font-size: 0.8rem;
-            color: #94a3b8;
+            color: var(--text-light);
         }
         .post-item .desc {
             margin-top: 8px;
-            color: #475569;
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
+        /* 文章详情 */
         #postView {
             display: none;
         }
@@ -189,30 +288,32 @@
             display: block;
         }
         #postView .post-body {
-            background: white;
+            background: var(--post-body-bg);
             padding: 32px 36px;
             border-radius: 24px;
             line-height: 1.8;
+            color: var(--text-primary);
         }
         #postView .post-body h1 {
             font-size: 2rem;
             margin-bottom: 4px;
+            color: var(--text-primary);
         }
         #postView .post-body pre {
-            background: #0f172a;
-            color: #e2e8f0;
+            background: var(--code-bg);
+            color: var(--code-text);
             padding: 16px;
             border-radius: 12px;
             overflow-x: auto;
         }
         #postView .post-body blockquote {
-            border-left: 4px solid #2563eb;
+            border-left: 4px solid var(--blockquote-border);
             padding-left: 20px;
-            color: #475569;
+            color: var(--blockquote-text);
             margin: 16px 0;
         }
         #postView .post-meta {
-            color: #94a3b8;
+            color: var(--text-light);
             font-size: 0.9rem;
             margin-bottom: 20px;
         }
@@ -229,7 +330,7 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .lang-switch {
+            .header-controls {
                 justify-content: flex-end;
             }
         }
@@ -245,13 +346,14 @@
         <main class="main-content">
             <div class="header-bar">
                 <h2 id="viewTitle">📖 文章目录</h2>
-                <div>
+                <div class="header-controls">
                     <button id="backBtn"></button>
                     <span class="lang-switch">
                         <button class="active" data-lang="zhs">简</button>
                         <button data-lang="zht">繁</button>
                         <button data-lang="eng">EN</button>
                     </span>
+                    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
                 </div>
             </div>
 
@@ -271,44 +373,60 @@
 
     <script>
         // ============================================================
-        //  多语言 + 数据外挂 完整逻辑
+        //  多语言 + 数据外挂 + 主题切换
         // ============================================================
 
         let currentLang = 'zhs';
-        let langData = null;          // UI 语言数据
-        let profileData = null;       // 社交链接数据
-        let manifestPosts = null;     // 原始文章元数据（含多语言）
-        let POSTS = [];               // 当前语言的文章列表（处理后）
+        let langData = null;
+        let profileData = null;
+        let manifestPosts = null;
+        let POSTS = [];
 
-        // -------- 工具：获取 URL 中的语言参数 --------
+        // -------- 主题切换 --------
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const current = htmlElement.getAttribute('data-theme') || 'dark';
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        }
+
+        // 加载存储的主题，默认为 dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // -------- 工具函数 --------
         function getLangFromURL() {
             const params = new URLSearchParams(window.location.search);
             const lang = params.get('lang');
             return (lang === 'zhs' || lang === 'zht' || lang === 'eng') ? lang : 'zhs';
         }
 
-        // -------- 加载 UI 语言文件 --------
         async function loadLang() {
             const res = await fetch('config/lang.json');
             if (!res.ok) throw new Error('无法加载 config/lang.json');
             return await res.json();
         }
 
-        // -------- 加载个人社交配置 --------
         async function loadProfile() {
             const res = await fetch('config/profile.json');
             if (!res.ok) throw new Error('无法加载 config/profile.json');
             return await res.json();
         }
 
-        // -------- 加载文章元数据 --------
         async function loadManifest() {
             const res = await fetch('posts/manifest.json');
             if (!res.ok) throw new Error('无法加载 posts/manifest.json');
             return await res.json();
         }
 
-        // -------- 工具：根据当前语言获取字段值 --------
         function getText(obj) {
             if (typeof obj === 'string') return obj;
             if (obj && typeof obj === 'object') {
@@ -317,17 +435,14 @@
             return '';
         }
 
-        // -------- 渲染个人简介（含社交链接） --------
+        // -------- 渲染函数 --------
         function renderProfile() {
             const container = document.getElementById('profileContainer');
             const p = langData.profile;
-
-            // 社交链接：从 profile.json 取 id 和 url，从 lang.json 取翻译名
             const socialHtml = profileData.social.map(s => {
                 const label = getText(langData.social_labels[s.id]);
                 return `<a href="${s.url}" target="_blank">${label}</a>`;
             }).join('');
-
             container.innerHTML = `
                 <div class="avatar">
                     <img src="${profileData.avatar}" alt="头像" />
@@ -339,7 +454,6 @@
             `;
         }
 
-        // -------- 根据当前语言更新文章列表 --------
         function updatePostsForCurrentLang() {
             if (!manifestPosts) return;
             POSTS = manifestPosts.map(item => ({
@@ -350,7 +464,6 @@
             }));
         }
 
-        // -------- 渲染首页（文章列表） --------
         function renderHome() {
             document.getElementById('homeView').style.display = 'block';
             document.getElementById('postView').classList.remove('active');
@@ -360,7 +473,7 @@
 
             const list = document.getElementById('postList');
             if (POSTS.length === 0) {
-                list.innerHTML = `<p style="color:#94a3b8;padding:20px;">${getText(langData.no_posts)}</p>`;
+                list.innerHTML = `<p style="color:var(--text-light);padding:20px;">${getText(langData.no_posts)}</p>`;
                 return;
             }
             list.innerHTML = POSTS.map(p => `
@@ -372,17 +485,14 @@
             `).join('');
         }
 
-        // -------- 打开文章正文（正文不翻译） --------
         window.openPost = async function(id) {
             const post = POSTS.find(p => p.id === id);
             if (!post) return;
-
             try {
                 const res = await fetch(`posts/${id}.md`);
                 if (!res.ok) throw new Error('文件不存在');
                 const md = await res.text();
                 const html = marked.parse(md);
-
                 document.getElementById('detailTitle').textContent = post.title;
                 document.getElementById('detailMeta').textContent = `📅 ${post.date}`;
                 document.getElementById('detailContent').innerHTML = html;
@@ -394,7 +504,6 @@
                     <p>请在 <code>posts/${id}.md</code> 中写入内容。</p>
                 `;
             }
-
             document.getElementById('homeView').style.display = 'none';
             document.getElementById('postView').classList.add('active');
             document.getElementById('backBtn').classList.add('show');
@@ -403,31 +512,22 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // -------- 返回首页 --------
         document.getElementById('backBtn').addEventListener('click', renderHome);
 
-        // -------- 切换语言 --------
+        // -------- 语言切换 --------
         async function switchLanguage(lang) {
             if (lang === currentLang) return;
             currentLang = lang;
-
-            // 更新 URL 参数
             const url = new URL(window.location);
             url.searchParams.set('lang', lang);
             window.history.pushState({}, '', url);
-
-            // 重新渲染所有界面
             renderProfile();
             updatePostsForCurrentLang();
             renderHome();
             document.title = getText(langData.site_title);
-
-            // 高亮按钮
             document.querySelectorAll('.lang-switch button').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === lang);
             });
-
-            // 如果当前在文章详情页，更新标题和日期（正文不变）
             const postView = document.getElementById('postView');
             if (postView.classList.contains('active')) {
                 const titleEl = document.getElementById('detailTitle');
@@ -443,43 +543,29 @@
         // -------- 初始化 --------
         async function init() {
             try {
-                // 加载所有数据
                 langData = await loadLang();
                 profileData = await loadProfile();
                 manifestPosts = await loadManifest();
-
-                // 获取初始语言
                 const initialLang = getLangFromURL();
                 currentLang = initialLang;
-
-                // 更新文章列表（按当前语言）
                 updatePostsForCurrentLang();
-
-                // 渲染
                 renderProfile();
                 renderHome();
                 document.title = getText(langData.site_title);
-
-                // 高亮语言按钮
                 document.querySelectorAll('.lang-switch button').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.lang === initialLang);
                 });
-
-                // 绑定切换事件
                 document.querySelectorAll('.lang-switch button').forEach(btn => {
                     btn.addEventListener('click', () => {
                         switchLanguage(btn.dataset.lang);
                     });
                 });
-
-                // 监听浏览器回退/前进
                 window.addEventListener('popstate', () => {
                     const newLang = getLangFromURL();
                     if (newLang !== currentLang) {
                         switchLanguage(newLang);
                     }
                 });
-
             } catch (e) {
                 console.error('初始化失败:', e);
                 alert('加载配置失败，请确保 config/ 和 posts/ 目录下的文件存在且格式正确。');
