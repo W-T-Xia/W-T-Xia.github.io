@@ -42,21 +42,6 @@
         }
     },
     "social_labels": {
-        "wechat": {
-            "zhs": "微信",
-            "zht": "微信",
-            "eng": "WeChat"
-        },
-        "whatsapp": {
-            "zhs": "WhatsApp",
-            "zht": "WhatsApp",
-            "eng": "WhatsApp"
-        },
-        "instagram": {
-            "zhs": "Instagram",
-            "zht": "Instagram",
-            "eng": "Instagram"
-        },
         "github": {
             "zhs": "GitHub",
             "zht": "GitHub",
