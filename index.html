@@ -113,8 +113,8 @@
             POSTS = manifestPosts.map(item => ({
                 id: item.id,
                 date: item.date,
-                title: getText(item.title),
-                desc: getText(item.desc)
+                title: item.title,
+                desc: item.desc
             }));
         }
 
