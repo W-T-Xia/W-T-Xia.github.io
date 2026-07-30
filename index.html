@@ -10,7 +10,6 @@
            全局 CSS 变量（亮色/深色）
            ============================================================ */
         :root {
-            /* 亮色主题（默认） */
             --bg-body: #f4f7fb;
             --bg-container: rgba(255, 255, 255, 0.75);
             --border-container: rgba(255, 255, 255, 0.8);
@@ -397,7 +396,6 @@
             setTheme(current === 'dark' ? 'light' : 'dark');
         }
 
-        // 加载存储的主题，默认为 dark
         const savedTheme = localStorage.getItem('theme') || 'dark';
         setTheme(savedTheme);
         themeToggle.addEventListener('click', toggleTheme);
@@ -514,22 +512,22 @@
 
         document.getElementById('backBtn').addEventListener('click', renderHome);
 
-        // -------- 语言切换 --------
+        // -------- 语言切换（修复返回按钮同步） --------
         async function switchLanguage(lang) {
             if (lang === currentLang) return;
             currentLang = lang;
             const url = new URL(window.location);
             url.searchParams.set('lang', lang);
             window.history.pushState({}, '', url);
+
+            // 更新个人简介
             renderProfile();
+            // 更新文章列表（标题/描述）
             updatePostsForCurrentLang();
-            renderHome();
-            document.title = getText(langData.site_title);
-            document.querySelectorAll('.lang-switch button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
+            // 更新首页或详情页
             const postView = document.getElementById('postView');
             if (postView.classList.contains('active')) {
+                // 当前在文章详情页：更新标题、日期、返回按钮文字、顶部标题
                 const titleEl = document.getElementById('detailTitle');
                 const currentTitle = titleEl.textContent;
                 const matched = POSTS.find(p => p.title === currentTitle);
@@ -537,7 +535,22 @@
                     titleEl.textContent = matched.title;
                     document.getElementById('detailMeta').textContent = `📅 ${matched.date}`;
                 }
+                // 更新返回按钮文字
+                document.getElementById('backBtn').textContent = getText(langData.back_button);
+                // 更新顶部标题（阅读文章）
+                document.getElementById('viewTitle').textContent = getText(langData.reading_title);
+            } else {
+                // 在首页：重新渲染首页（已包含返回按钮文字更新）
+                renderHome();
             }
+
+            // 更新页面标题
+            document.title = getText(langData.site_title);
+
+            // 更新语言按钮高亮
+            document.querySelectorAll('.lang-switch button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
         }
 
         // -------- 初始化 --------
