@@ -1,2 +1,2 @@
 # W-T-Xia.github.io
-Wentao Xia(夏文韬)'s personal website
+夏文韬(also known as 夏文韜 or Wen-Tao Xia)'s personal website
