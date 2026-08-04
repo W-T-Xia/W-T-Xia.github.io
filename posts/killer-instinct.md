@@ -1,6 +1,3 @@
-## 愛在西元前
-
-
 <div style="font-style:italic; font-weight:bold;">
 萬卷經書矇慧眼，<br>
 忍教真性摧殘。<br>
