@@ -80,6 +80,7 @@ Blogs are mainly written in Chinese(漢語).
 ---
 
 ## 📁 Project Structure
+```
 .
 ├── .gitignore
 ├── LICENSE
@@ -92,6 +93,7 @@ Blogs are mainly written in Chinese(漢語).
     ├── manifest.json
     ├── hello-world.md
     └── killer-instinct.md
+```
 
 
 ---
