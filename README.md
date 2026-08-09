@@ -26,7 +26,7 @@ Blogs are mainly written in Chinese(漢語).
 ### v1.4.0 — 2026-08-09
 **First Published Articles**
 - Published first article: "Hello World，我的第一篇博客" (2026-07-30)
-- Published second article: "塵鑒" (2026-08-04)
+- Published second article: "愛在西元前" (2026-08-04)
 - Article catalog uses single-language manifest (no multilingual titles/descriptions)
 - Front matter (intro poem) and colophon (closing poem) formatted with italic + bold using inline HTML styles
 - Proper paragraph spacing for better readability
