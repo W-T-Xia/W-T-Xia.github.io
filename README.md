@@ -145,17 +145,24 @@ json
 }
 ...and update corresponding translations in config/lang.json.
 
-📝 License
-Code (HTML/CSS/JS): MIT License
+## 📝 License
 
-Blog Content (Markdown files in posts/): All rights reserved. Do not republish or commercialize without permission.
+**Code** (HTML/CSS/JS):  
+Licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute the code for personal or commercial projects.
 
-👤 Author
-夏文韬(also known as 夏文韜 or Wen-Tao Xia)
-Tongji University, Shanghai
-w.t.xia.2005@gmail.com
+**Blog Content** (Markdown files in `posts/`):  
+All rights reserved. Do not republish, reproduce, or commercialize without explicit written permission from the author.
+
+---
+
+## 👤 Author
+
+**夏文韬(a.k.a.夏文韜 or Wen-Tao Xia)**  
+Tongji University, Shanghai  
+📧 w.t.xia.2005@gmail.com  
+
+---
 
 *Last updated: 2026-08-10*
-```
 
 ---
