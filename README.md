@@ -88,14 +88,13 @@ Blogs are mainly written in Chinese(漢語).
 ├── posts/
 │ ├── manifest.json # Article catalog (single-language)
 │ ├── hello-world.md # Blog post content
-│ └── chen-jian.md # Blog post content
+│ └── killer-instinct.md # Blog post content
 ├── images/
 │ └── avatar.jpg # Profile avatar
 ├── README.md # This file
 ├── .gitignore
 └── LICENSE
 
-text
 
 ---
 
