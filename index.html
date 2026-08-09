@@ -39,6 +39,7 @@
             --lang-btn-active-color: white;
             --back-btn-color: #2563eb;
             --back-btn-bg: rgba(37, 99, 235, 0.08);
+            --comments-title-color: var(--text-primary);
         }
 
         [data-theme="dark"] {
@@ -71,6 +72,7 @@
             --lang-btn-active-color: white;
             --back-btn-color: #60a5fa;
             --back-btn-bg: rgba(59, 130, 246, 0.15);
+            --comments-title-color: #e8edf5;
         }
 
         /* ===== 全局重置 ===== */
@@ -317,6 +319,21 @@
             margin-bottom: 20px;
         }
 
+        /* ===== 评论区域 ===== */
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--card-border);
+        }
+        .comments-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--comments-title-color);
+        }
+        #giscus-container {
+            min-height: 100px;
+        }
+
         @media (max-width: 750px) {
             .container {
                 grid-template-columns: 1fr;
@@ -362,6 +379,12 @@
                     <h1 id="detailTitle"></h1>
                     <div class="post-meta" id="detailMeta"></div>
                     <div id="detailContent"></div>
+
+                    <!-- ===== 评论区域 ===== -->
+                    <div class="comments-section">
+                        <h3 id="commentsTitle">💬 留言</h3>
+                        <div id="giscus-container"></div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -385,6 +408,8 @@
             const detailTitle = document.getElementById('detailTitle');
             const detailMeta = document.getElementById('detailMeta');
             const detailContent = document.getElementById('detailContent');
+            const giscusContainer = document.getElementById('giscus-container');
+            const commentsTitle = document.getElementById('commentsTitle');
             const langButtons = document.querySelectorAll('.lang-switch button');
 
             // -------- 主题切换（带判空） --------
@@ -461,7 +486,7 @@
 
                 const socialHtml = socials.map(s => {
                     const labelObj = langData.social_labels && langData.social_labels[s.id];
-                    const label = labelObj ? getText(labelObj) : s.id; // 降级显示 id
+                    const label = labelObj ? getText(labelObj) : s.id;
                     return `<a href="${s.url || '#'}" target="_blank">${label}</a>`;
                 }).join('');
 
@@ -514,6 +539,46 @@
                 `).join('');
             }
 
+            // -------- 加载 Giscus 评论 --------
+            function loadGiscus() {
+                if (!giscusContainer) return;
+                // 清空容器，防止重复加载
+                giscusContainer.innerHTML = '';
+
+                // 如果当前是首页（文章未打开），不加载评论
+                if (!postView.classList.contains('active')) return;
+
+                // 判断当前语言对应的 Giscus 语言代码
+                const langMap = {
+                    'zhs': 'zh-CN',
+                    'zht': 'zh-TW',
+                    'eng': 'en'
+                };
+                const giscusLang = langMap[currentLang] || 'zh-CN';
+
+                // 获取当前文章 ID 用于映射（可选），但我们使用 pathname 映射
+                // 创建 Giscus 脚本
+                const script = document.createElement('script');
+                script.src = 'https://giscus.app/client.js';
+                script.setAttribute('data-repo', '你的用户名/你的用户名.github.io');    // 👈 必填：替换为你的仓库
+                script.setAttribute('data-repo-id', '你的仓库ID');                     // 👈 必填：替换为你的仓库ID
+                script.setAttribute('data-category', 'Announcements');                 // 👈 必填：替换为你的分类名
+                script.setAttribute('data-category-id', '你的分类ID');                // 👈 必填：替换为你的分类ID
+                script.setAttribute('data-mapping', 'pathname');
+                script.setAttribute('data-strict', '0');
+                script.setAttribute('data-reactions-enabled', '1');
+                script.setAttribute('data-emit-metadata', '0');
+                script.setAttribute('data-input-position', 'bottom');
+                // 根据当前主题设置 Giscus 主题
+                const currentTheme = htmlElement.getAttribute('data-theme') || 'dark';
+                script.setAttribute('data-theme', currentTheme === 'dark' ? 'dark' : 'light');
+                script.setAttribute('data-lang', giscusLang);
+                script.setAttribute('crossorigin', 'anonymous');
+                script.async = true;
+
+                giscusContainer.appendChild(script);
+            }
+
             // -------- 打开文章详情 --------
             window.openPost = async function(id) {
                 const post = POSTS.find(p => p.id === id);
@@ -543,12 +608,18 @@
                     if (langData) backBtn.textContent = getText(langData.back_button);
                 }
                 if (viewTitle && langData) viewTitle.textContent = getText(langData.reading_title);
+                // 加载评论
+                loadGiscus();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
 
             // -------- 返回首页 --------
             if (backBtn) {
-                backBtn.addEventListener('click', renderHome);
+                backBtn.addEventListener('click', function() {
+                    renderHome();
+                    // 清空评论容器，避免残留
+                    if (giscusContainer) giscusContainer.innerHTML = '';
+                });
             }
 
             // -------- 语言切换 --------
@@ -565,6 +636,13 @@
                 if (postView && postView.classList.contains('active')) {
                     if (backBtn && langData) backBtn.textContent = getText(langData.back_button);
                     if (viewTitle && langData) viewTitle.textContent = getText(langData.reading_title);
+                    // 评论标题也跟随语言
+                    if (commentsTitle) {
+                        const commentsLabel = langData.comments_label || { zhs: '💬 留言', zht: '💬 留言', eng: '💬 Comments' };
+                        commentsTitle.textContent = getText(commentsLabel);
+                    }
+                    // 重新加载 Giscus（语言变更）
+                    loadGiscus();
                 } else {
                     renderHome(); // 会更新首页所有文字
                 }
@@ -576,6 +654,21 @@
                     btn.classList.toggle('active', btn.dataset.lang === lang);
                 });
             }
+
+            // -------- 监听主题变化以更新 Giscus 主题 --------
+            // 由于 Giscus 主题在加载时由 data-theme 决定，切换主题后需重新加载
+            // 我们可以扩展主题切换函数，增加重新加载评论的逻辑
+            const originalSetTheme = setTheme;
+            setTheme = function(theme) {
+                originalSetTheme(theme);
+                // 如果当前在文章详情页，重新加载 Giscus 以更新主题
+                if (postView && postView.classList.contains('active')) {
+                    loadGiscus();
+                }
+            };
+            // 重新绑定主题切换事件（保留之前的监听）
+            // 但之前已经绑定了 click，现在直接覆盖函数，但 click 事件里调用的 setTheme 已被替换
+            // 所以不需要重新绑定
 
             // -------- 初始化 --------
             async function init() {
@@ -590,6 +683,11 @@
                     renderProfile();
                     renderHome();
                     if (langData) document.title = getText(langData.site_title);
+
+                    // 评论标题翻译
+                    if (commentsTitle && langData.comments_label) {
+                        commentsTitle.textContent = getText(langData.comments_label);
+                    }
 
                     // 语言按钮事件
                     langButtons.forEach(btn => {
