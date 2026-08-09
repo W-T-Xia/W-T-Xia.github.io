@@ -16,7 +16,7 @@ Blogs are mainly written in Chinese(漢語).
 **Giscus Comments Integration**
 
 - Added Giscus comment system for each blog post
-- Comments are mapped via `pathname`, ensuring each article has its own independent comment thread
+- Comments are mapped via `Discussions\Announcements`, ensuring each article has its own independent comment thread
 - Comment interface language follows the site's language selection (zhs/zht/eng)
 - Comment theme automatically syncs with the site's dark/light mode toggle
 - Comments are stored as GitHub Discussions in the repository, allowing admin review and management
@@ -26,7 +26,7 @@ Blogs are mainly written in Chinese(漢語).
 ### v1.3.0 — 2026-08-04
 **Published Second Article: "愛在西元前"**
 
-- Added new blog post `chen-jian.md` with full content
+- Added new blog post `killer-instinct.md` with full content
 - Front matter (intro poem) and colophon (closing poem) formatted as italic + bold using inline HTML styles
 - Added proper paragraph spacing between sections for better readability
 - Removed second-person pronouns ("you/I") to reduce didactic tone
