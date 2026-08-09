@@ -82,17 +82,17 @@ Blogs are mainly written in Chinese(漢語).
 ## 📁 Project Structure
 ```
 .
-├── .gitignore
-├── LICENSE
-├── README.md
-├── index.html
-├── config/
-│   ├── lang.json
-│   └── profile.json
-└── posts/
-    ├── manifest.json
-    ├── hello-world.md
-    └── killer-instinct.md
+├── .gitignore             # Git ignore rules
+├── LICENSE                # MIT License
+├── README.md              # Project documentation
+├── index.html             # Main entry point (all logic & styles)
+├── config/                # Configuration files directory
+│   ├── lang.json          # UI translations (zhs / zht / eng)
+│   └── profile.json       # Personal info & social links
+└── posts/                 # Blog posts directory
+    ├── manifest.json      # Article catalog (id, date, title, desc)
+    ├── hello-world.md     # First blog post: "Hello World，我的第一篇博客"
+    └── killer-instinct.md # Second Blog post: "愛在西元前"
 ```
 
 
