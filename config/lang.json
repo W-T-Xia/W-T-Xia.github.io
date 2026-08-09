@@ -2,7 +2,7 @@
     "site_title": {
         "zhs": "夏文韬 · 个人博客",
         "zht": "夏文韜 · 個人部落格",
-        "eng": "Wen-Tao Xia · Personal Blog"
+        "eng": "Wen-tao Xia · Personal Blog"
     },
     "nav_title": {
         "zhs": "📖 文章目录",
@@ -24,11 +24,16 @@
         "zht": "📭 暫無文章，快去寫一篇吧 ✍️",
         "eng": "📭 No posts yet. Start writing! ✍️"
     },
+    "comments_label": {
+        "zhs": "💬 留言",
+        "zht": "💬 留言",
+        "eng": "💬 Comments"
+    },
     "profile": {
         "name": {
             "zhs": "夏文韬",
             "zht": "夏文韜",
-            "eng": "Wen-Tao Xia"
+            "eng": "Xia Wentao"
         },
         "tagline": {
             "zhs": "🧑‍💻 全栈开发者 · 终身学习者",
