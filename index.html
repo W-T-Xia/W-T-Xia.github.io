@@ -411,6 +411,7 @@
             const giscusContainer = document.getElementById('giscus-container');
             const commentsTitle = document.getElementById('commentsTitle');
             const langButtons = document.querySelectorAll('.lang-switch button');
+            const pageTitle = document.getElementById('pageTitle');
 
             // -------- 主题切换（带判空） --------
             function setTheme(theme) {
@@ -519,6 +520,11 @@
             function renderHome() {
                 // ✅ 清空 URL hash，回到根路径
                 window.location.hash = '';
+                // ✅ 恢复页面标题为网站标题
+                if (pageTitle && langData) {
+                    pageTitle.textContent = getText(langData.site_title);
+                    document.title = getText(langData.site_title);
+                }
 
                 if (!homeView || !postView || !backBtn || !viewTitle || !postList) return;
                 homeView.style.display = 'block';
@@ -559,7 +565,9 @@
                 };
                 const giscusLang = langMap[currentLang] || 'zh-CN';
 
-                // 获取当前文章 ID 用于映射（可选），但我们使用 pathname 映射
+                // 获取当前文章标题作为 Giscus 的匹配依据
+                const currentTitle = pageTitle ? pageTitle.textContent : document.title;
+
                 // 创建 Giscus 脚本
                 const script = document.createElement('script');
                 script.src = 'https://giscus.app/client.js';
@@ -567,7 +575,8 @@
                 script.setAttribute('data-repo-id', 'R_kgDOTn8Uyw');
                 script.setAttribute('data-category', 'Announcements');
                 script.setAttribute('data-category-id', 'DIC_kwDOTn8Uy84DDAfR');
-                script.setAttribute('data-mapping', 'pathname');
+                // ✅ 改用 title 映射，因为 SPA 中 pathname 永远不变
+                script.setAttribute('data-mapping', 'title');
                 script.setAttribute('data-strict', '1');  // 严格匹配
                 script.setAttribute('data-reactions-enabled', '1');
                 script.setAttribute('data-emit-metadata', '0');
@@ -584,11 +593,19 @@
 
             // -------- 打开文章详情 --------
             window.openPost = async function(id) {
-                // ✅ 更新 URL hash，让 Giscus 能区分不同文章
-                window.location.hash = `#/posts/${id}`;
-
                 const post = POSTS.find(p => p.id === id);
                 if (!post) return;
+
+                // ✅ 更新 URL hash
+                window.location.hash = `#/posts/${id}`;
+
+                // ✅ 更新页面标题（这是 Giscus 映射的关键！）
+                const fullTitle = `${post.title} · 夏文韬`;
+                if (pageTitle) {
+                    pageTitle.textContent = fullTitle;
+                    document.title = fullTitle;
+                }
+
                 try {
                     const res = await fetch(`posts/${id}.md`);
                     if (!res.ok) throw new Error('文件不存在');
@@ -653,7 +670,10 @@
                     renderHome(); // 会更新首页所有文字
                 }
 
-                if (langData) document.title = getText(langData.site_title);
+                if (langData) {
+                    document.title = getText(langData.site_title);
+                    if (pageTitle) pageTitle.textContent = getText(langData.site_title);
+                }
 
                 // 高亮语言按钮
                 langButtons.forEach(btn => {
@@ -662,19 +682,13 @@
             }
 
             // -------- 监听主题变化以更新 Giscus 主题 --------
-            // 由于 Giscus 主题在加载时由 data-theme 决定，切换主题后需重新加载
-            // 我们可以扩展主题切换函数，增加重新加载评论的逻辑
             const originalSetTheme = setTheme;
             setTheme = function(theme) {
                 originalSetTheme(theme);
-                // 如果当前在文章详情页，重新加载 Giscus 以更新主题
                 if (postView && postView.classList.contains('active')) {
                     loadGiscus();
                 }
             };
-            // 重新绑定主题切换事件（保留之前的监听）
-            // 但之前已经绑定了 click，现在直接覆盖函数，但 click 事件里调用的 setTheme 已被替换
-            // 所以不需要重新绑定
 
             // -------- 初始化 --------
             async function init() {
@@ -688,14 +702,15 @@
                     updatePostsForCurrentLang();
                     renderProfile();
                     renderHome();
-                    if (langData) document.title = getText(langData.site_title);
+                    if (langData) {
+                        document.title = getText(langData.site_title);
+                        if (pageTitle) pageTitle.textContent = getText(langData.site_title);
+                    }
 
-                    // 评论标题翻译
                     if (commentsTitle && langData.comments_label) {
                         commentsTitle.textContent = getText(langData.comments_label);
                     }
 
-                    // 语言按钮事件
                     langButtons.forEach(btn => {
                         btn.classList.toggle('active', btn.dataset.lang === initialLang);
                         btn.addEventListener('click', function() {
