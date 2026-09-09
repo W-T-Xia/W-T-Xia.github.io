@@ -12,6 +12,15 @@ Blogs are mainly written in Chinese(漢語).
 
 ## 📖 Version Log
 
+### v1.5.0 — 2026-09-09
+**Published Third Article: "美人畫卷"**
+
+- Published third article — a four-part framework analyzing different types of women based on their upbringing and worldview
+- Added new blog post `ladies-under-matrix.md` with full content
+- Front matter (intro poem) and colophon (closing poem) formatted as italic + bold using inline HTML styles
+- Added proper paragraph spacing between sections for better readability
+---
+
 ### v1.4.0 — 2026-08-10
 **Giscus Comments Integration**
 
@@ -82,17 +91,18 @@ Blogs are mainly written in Chinese(漢語).
 ## 📁 Project Structure
 ```
 .
-├── .gitignore             # Git ignore rules
-├── LICENSE                # MIT License
-├── README.md              # Project documentation
-├── index.html             # Main entry point (all logic & styles)
-├── config/                # Configuration files directory
-│   ├── lang.json          # UI translations (zhs / zht / eng)
-│   └── profile.json       # Personal info & social links
-└── posts/                 # Blog posts directory
-    ├── manifest.json      # Article catalog (id, date, title, desc)
-    ├── hello-world.md     # First blog post: "Hello World，我的第一篇博客"
-    └── killer-instinct.md # Second Blog post: "愛在西元前"
+├── .gitignore                     # Git ignore rules
+├── LICENSE                        # MIT License
+├── README.md                      # Project documentation
+├── index.html                     # Main entry point (all logic & styles)
+├── config/                        # Configuration files directory
+│   ├── lang.json                  # UI translations (zhs / zht / eng)
+│   └── profile.json               # Personal info & social links
+└── posts/                         # Blog posts directory
+    ├── manifest.json              # Article catalog (id, date, title, desc)
+    ├── hello-world.md             # First blog post: "Hello World，我的第一篇博客"
+    ├── killer-instinct.md         # Second Blog post: "愛在西元前"
+    └── ladies-under-matrix.md     # Third Blog post: "美人畫卷"
 ```
 
 
