@@ -1,28 +1,27 @@
-<div style="font-size: 2.5em; font-weight: bold; line-height: 1.6; text-align: left;">
+<div style="font-size: 1.3em; font-weight: bold; line-height: 1.6; text-align: left;">
 兵者，詭道也。故能而示之不能，用而示之不用，近而示之遠，遠而示之近。<br>
 ——<i>《孫子兵法·始計篇》</i>
 </div>
 
-<div dir="rtl" style="font-size: 2.5em; font-weight: bold; line-height: 1.6; text-align: right;">
+<div dir="rtl" style="font-size: 1.3em; font-weight: bold; line-height: 1.6; text-align: right;">
 וְאֵיבָ֣ה ׀ אָשִׁ֗ית בֵּֽינְךָ֙ וּבֵ֣ין הָֽאִשָּׁ֔ה וּבֵ֥ין זַרְעֲךָ֖ וּבֵ֣ין זַרְעָ֑הּ ה֚וּא יְשׁוּפְךָ֣ רֹ֔אשׁ וְאַתָּ֖ה תְּשׁוּפֶ֥נּוּ עָקֵֽב׃ ס<br>
 ——<i>בְּרֵאשִׁית</i> ג׳:ט״ו
 </div>
 
-<div style="font-size: 2.5em; font-weight: bold; line-height: 1.6; text-align: left;">
+<div style="font-size: 1.3em; font-weight: bold; line-height: 1.6; text-align: left;">
 Ὅστις πρὸς Ἔρωτα πὺξ ἀνταγωνίζεται, οὐκ οἶδεν αὐτὸν ὅτι θεῶν ἄρχει.<br>
 ——Σοφοκλῆς, <i>Τραχίνιαι</i>
 </div>
 
-<div style="font-size: 2.5em; font-weight: bold; line-height: 1.6; text-align: left;">
+<div style="font-size: 1.3em; font-weight: bold; line-height: 1.6; text-align: left;">
 Militat omnis amans, et habet sua castra Cupido.<br>
 ——Ovidius, <i>Amores</i> I.9
 </div>
 
-<div style="font-size: 2.5em; font-weight: bold; line-height: 1.6; text-align: left;">
+<div style="font-size: 1.3em; font-weight: bold; line-height: 1.6; text-align: left;">
 All is fair in love and war.<br>
 ——Francis Edward Smedley, <i>Frank Fairlegh</i> (1850)
 </div>
-
 
 ---
 
