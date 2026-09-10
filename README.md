@@ -12,6 +12,16 @@ Blogs are mainly written in Chinese(漢語).
 
 ## 📖 Version Log
 
+### v1.6.0 — 2026-09-10
+**Published Fourth Article: "人生若只如初見，何事秋風悲畫扇"**
+
+- Published fourth article — an analysis of the fundamental misalignment and power dynamics in male-female relationships, framed by multi-lingual aphorisms on love and war
+- Added new blog post `love-is-war.md` with full content
+- Front matter (intro poem) formatted as multi-lingual quotations (Chinese, Hebrew, Greek, Latin, English) using bold + italic inline HTML styles
+- Added proper paragraph spacing between sections for better readability
+- Updated article catalog in `posts/manifest.json`
+---
+
 ### v1.5.0 — 2026-09-09
 **Published Third Article: "美人畫卷"**
 
@@ -102,7 +112,8 @@ Blogs are mainly written in Chinese(漢語).
     ├── manifest.json              # Article catalog (id, date, title, desc)
     ├── hello-world.md             # First blog post: "Hello World，我的第一篇博客"
     ├── killer-instinct.md         # Second Blog post: "愛在西元前"
-    └── ladies-under-matrix.md     # Third Blog post: "美人畫卷"
+    ├── ladies-under-matrix.md     # Third Blog post: "美人畫卷"
+    └── love-is-war.md             # Fourth Blog post: "人生若只如初見，何事秋風悲畫扇"
 ```
 
 
