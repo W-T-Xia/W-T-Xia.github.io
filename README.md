@@ -12,7 +12,7 @@ Blogs are mainly written in Chinese(漢語).
 
 ## 📖 Version Log
 
-### v1.6.0 — 2026-09-10
+### v1.6.0 — 2026-09-17
 **Published Fourth Article: "人生若只如初見，何事秋風悲畫扇"**
 
 - Published fourth article — an analysis of the fundamental misalignment and power dynamics in male-female relationships, framed by multi-lingual aphorisms on love and war
