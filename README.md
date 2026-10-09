@@ -12,7 +12,17 @@ Blogs are mainly written in Chinese(漢語).
 
 ## 📖 Version Log
 
-### v1.6.0 — 2026-09-17
+### v1.7.0 — 2026-10-9
+**Published Fifth Article: "同聲相應，同氣相求"**
+
+- Published fifth article — an essay on how faction, intuition, and subjectivity shape attraction and social belonging.
+- Added new blog post `similis-simili-gaudet.md` with full content
+- Front matter (intro poem) formatted as multi-lingual quotations (Chinese, Greek, Latin) 
+- Updated article catalog in `posts/manifest.json`
+
+---
+
+### v1.6.0 — 2026-09-10
 **Published Fourth Article: "人生若只如初見，何事秋風悲畫扇"**
 
 - Published fourth article — an analysis of the fundamental misalignment and power dynamics in male-female relationships, framed by multi-lingual aphorisms on love and war
@@ -20,6 +30,7 @@ Blogs are mainly written in Chinese(漢語).
 - Front matter (intro poem) formatted as multi-lingual quotations (Chinese, Hebrew, Greek, Latin, English) using bold + italic inline HTML styles
 - Added proper paragraph spacing between sections for better readability
 - Updated article catalog in `posts/manifest.json`
+
 ---
 
 ### v1.5.0 — 2026-09-09
@@ -29,6 +40,8 @@ Blogs are mainly written in Chinese(漢語).
 - Added new blog post `ladies-under-matrix.md` with full content
 - Front matter (intro poem) and colophon (closing poem) formatted as italic + bold using inline HTML styles
 - Added proper paragraph spacing between sections for better readability
+- Updated article catalog in `posts/manifest.json`
+
 ---
 
 ### v1.4.0 — 2026-08-10
@@ -49,6 +62,7 @@ Blogs are mainly written in Chinese(漢語).
 - Front matter (intro poem) and colophon (closing poem) formatted as italic + bold using inline HTML styles
 - Added proper paragraph spacing between sections for better readability
 - Removed second-person pronouns ("you/I") to reduce didactic tone
+- Updated article catalog in `posts/manifest.json`
 
 ---
 
@@ -113,7 +127,8 @@ Blogs are mainly written in Chinese(漢語).
     ├── hello-world.md             # First blog post: "Hello World，我的第一篇博客"
     ├── killer-instinct.md         # Second Blog post: "愛在西元前"
     ├── ladies-under-matrix.md     # Third Blog post: "美人畫卷"
-    └── love-is-war.md             # Fourth Blog post: "人生若只如初見，何事秋風悲畫扇"
+    ├── love-is-war.md             # Fourth Blog post: "人生若只如初見，何事秋風悲畫扇"
+    └── similis-simili-gaudet.md   # Fifth Blog post: "同聲相應，同氣相求"
 ```
 
 
@@ -183,7 +198,7 @@ Tongji University, Shanghai
 
 ---
 
-*Last updated: 2026-08-17*
+*Last updated: 2026-10-9*
 
 ---
 
