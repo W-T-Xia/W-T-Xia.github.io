@@ -1,4 +1,5 @@
 <strong><small>Πᾶν ζῷον ἀγαπᾷ τὸ ὅμοιον αὑτῷ, οὕτως καὶ πᾶς ἄνθρωπος τὸν πλησίον ἑαυτοῦ.</small></strong>
+
 <strong>Semper graculus assidet graculo.</strong>
 
 人不是為錢買單，也不是為臉買單。人只會為派系買單。
